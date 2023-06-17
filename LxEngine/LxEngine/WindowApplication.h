@@ -16,7 +16,12 @@ public:
 		return Instance;
 	}
 
+public:
+	HWND GetHwnd() { return m_hwnd; }
 	int Launch(World* world, HINSTANCE hInstance, int nCmdShow);
+
+private:
+	HWND m_hwnd;
 
 public:
 	ATOM                RegisterWinClass(HINSTANCE hInstance);

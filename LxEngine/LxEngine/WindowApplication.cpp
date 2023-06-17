@@ -1,5 +1,5 @@
+#include "stdafx.h"
 #include "WindowApplication.h"
-
 
 #define MAX_LOADSTRING 100
 
@@ -37,6 +37,7 @@ int WindowApplication::Launch(World* world, HINSTANCE hInstance, int nCmdShow)
         return FALSE;
     }
 
+    world->Init();
 
     HACCEL hAccelTable = LoadAccelerators(hInstance, MAKEINTRESOURCE(IDC_LXENGINE));
 
@@ -97,16 +98,16 @@ BOOL WindowApplication::InitInstance(HINSTANCE hInstance, int nCmdShow)
 {
     hInst = hInstance; // 将实例句柄存储在全局变量中
 
-    HWND hWnd = CreateWindowW(szWindowClass, szTitle, WS_OVERLAPPEDWINDOW,
+    m_hwnd = CreateWindowW(szWindowClass, szTitle, WS_OVERLAPPEDWINDOW,
         CW_USEDEFAULT, 0, CW_USEDEFAULT, 0, nullptr, nullptr, hInstance, nullptr);
 
-    if (!hWnd)
+    if (!m_hwnd)
     {
         return FALSE;
     }
 
-    ShowWindow(hWnd, nCmdShow);
-    UpdateWindow(hWnd);
+    ShowWindow(m_hwnd, nCmdShow);
+    UpdateWindow(m_hwnd);
 
     return TRUE;
 }
