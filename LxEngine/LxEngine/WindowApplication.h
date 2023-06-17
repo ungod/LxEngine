@@ -7,12 +7,21 @@
 class WindowApplication
 {
 public:
-	static int Launch(World* world, HINSTANCE hInstance, int nCmdShow);
+	static WindowApplication* Instance;
+	static WindowApplication* Get()
+	{
+		if (Instance == nullptr)
+			Instance = new WindowApplication();
 
-private:
-	static ATOM                RegisterClass(HINSTANCE hInstance);
-	static BOOL                InitInstance(HINSTANCE, int);
-	static LRESULT CALLBACK    WndProc(HWND, UINT, WPARAM, LPARAM);
-	static INT_PTR CALLBACK    About(HWND, UINT, WPARAM, LPARAM);
+		return Instance;
+	}
+
+	int Launch(World* world, HINSTANCE hInstance, int nCmdShow);
+
+public:
+	ATOM                RegisterWinClass(HINSTANCE hInstance);
+	BOOL                InitInstance(HINSTANCE, int);
+	LRESULT CALLBACK    AppWndProc(HWND, UINT, WPARAM, LPARAM);
+	INT_PTR CALLBACK    AppAbout(HWND, UINT, WPARAM, LPARAM);
 };
 

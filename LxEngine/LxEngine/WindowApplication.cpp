@@ -10,6 +10,17 @@ WCHAR szWindowClass[MAX_LOADSTRING];            // 主窗口类名
 
 // 此代码模块中包含的函数的前向声明:
 
+LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
+{
+    return WindowApplication::Get()->AppWndProc(hWnd, message, wParam, lParam);
+}
+
+INT_PTR CALLBACK About(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam)
+{
+    return WindowApplication::Get()->AppAbout(hDlg, message, wParam, lParam);
+}
+
+WindowApplication* WindowApplication::Instance = nullptr;
 
 int WindowApplication::Launch(World* world, HINSTANCE hInstance, int nCmdShow)
 {
@@ -18,13 +29,14 @@ int WindowApplication::Launch(World* world, HINSTANCE hInstance, int nCmdShow)
 // 初始化全局字符串
     LoadStringW(hInstance, IDS_APP_TITLE, szTitle, MAX_LOADSTRING);
     LoadStringW(hInstance, IDC_LXENGINE, szWindowClass, MAX_LOADSTRING);
-    RegisterClass(hInstance);
+    RegisterWinClass(hInstance);
 
     // 执行应用程序初始化:
     if (!InitInstance(hInstance, nCmdShow))
     {
         return FALSE;
     }
+
 
     HACCEL hAccelTable = LoadAccelerators(hInstance, MAKEINTRESOURCE(IDC_LXENGINE));
 
@@ -50,7 +62,7 @@ int WindowApplication::Launch(World* world, HINSTANCE hInstance, int nCmdShow)
 //
 //  目标: 注册窗口类。
 //
-ATOM WindowApplication::RegisterClass(HINSTANCE hInstance)
+ATOM WindowApplication::RegisterWinClass(HINSTANCE hInstance)
 {
     WNDCLASSEXW wcex;
 
@@ -109,7 +121,7 @@ BOOL WindowApplication::InitInstance(HINSTANCE hInstance, int nCmdShow)
 //  WM_DESTROY  - 发送退出消息并返回
 //
 //
-LRESULT CALLBACK WindowApplication::WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
+LRESULT CALLBACK WindowApplication::AppWndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
     switch (message)
     {
@@ -148,7 +160,7 @@ LRESULT CALLBACK WindowApplication::WndProc(HWND hWnd, UINT message, WPARAM wPar
 }
 
 // “关于”框的消息处理程序。
-INT_PTR CALLBACK WindowApplication::About(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam)
+INT_PTR CALLBACK WindowApplication::AppAbout(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam)
 {
     UNREFERENCED_PARAMETER(lParam);
     switch (message)
