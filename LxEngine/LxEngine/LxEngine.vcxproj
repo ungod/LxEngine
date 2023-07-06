@@ -109,8 +109,17 @@
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>d3d12.lib;dxgi.lib;d3dcompiler.lib;$(CoreLibraryDependencies);%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>d3d12.lib;dxgi.lib;d3dcompiler.lib;dxguid.lib;$(CoreLibraryDependencies);%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
+    <CustomBuild>
+      <Command>copy %(Identity) "$(OutDir)" &gt; NUL</Command>
+    </CustomBuild>
+    <CustomBuild>
+      <Outputs>$(OutDir)\%(Identity)</Outputs>
+    </CustomBuild>
+    <CustomBuild>
+      <TreatOutputAsContent>true</TreatOutputAsContent>
+    </CustomBuild>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
@@ -151,6 +160,15 @@
   <ItemGroup>
     <Image Include="LxEngine.ico" />
     <Image Include="small.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="..\..\..\DirectX-Graphics-Samples\Samples\Desktop\D3D12HelloWorld\src\HelloTexture\shaders.hlsl">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
+      <FileType>Document</FileType>
+      <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</DeploymentContent>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">copy %(Identity) "$(OutDir)" &gt; NUL</Command>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(OutDir)\%(Identity)</Outputs>
+    </CustomBuild>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

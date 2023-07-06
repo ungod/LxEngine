@@ -70,4 +70,9 @@
       <Filter>资源文件</Filter>
     </Image>
   </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="..\..\..\DirectX-Graphics-Samples\Samples\Desktop\D3D12HelloWorld\src\HelloTexture\shaders.hlsl">
+      <Filter>资源文件</Filter>
+    </CustomBuild>
+  </ItemGroup>
 </Project>

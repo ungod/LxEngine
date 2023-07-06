@@ -37,7 +37,9 @@ int WindowApplication::Launch(World* world, HINSTANCE hInstance, int nCmdShow)
         return FALSE;
     }
 
-    world->Init();
+    m_CurrentWorld = world;
+    if (m_CurrentWorld)
+        m_CurrentWorld->Init();
 
     HACCEL hAccelTable = LoadAccelerators(hInstance, MAKEINTRESOURCE(IDC_LXENGINE));
 
@@ -82,6 +84,18 @@ ATOM WindowApplication::RegisterWinClass(HINSTANCE hInstance)
     wcex.hIconSm = LoadIcon(wcex.hInstance, MAKEINTRESOURCE(IDI_SMALL));
 
     return RegisterClassExW(&wcex);
+}
+
+std::wstring WindowApplication::GetAssetFullPath(LPCWSTR assetName)
+{
+    if (m_assetsPath.empty())
+    {
+        WCHAR assetsPath[512];
+        GetAssetsPath(assetsPath, _countof(assetsPath));
+        m_assetsPath = assetsPath;
+    }
+    
+    return m_assetsPath;
 }
 
 //
@@ -148,6 +162,10 @@ LRESULT CALLBACK WindowApplication::AppWndProc(HWND hWnd, UINT message, WPARAM w
         PAINTSTRUCT ps;
         HDC hdc = BeginPaint(hWnd, &ps);
         // TODO: 在此处添加使用 hdc 的任何绘图代码...
+        if (m_CurrentWorld)
+        {
+            m_CurrentWorld->Render();
+        }
         EndPaint(hWnd, &ps);
     }
     break;
